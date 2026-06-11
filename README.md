@@ -1,4 +1,4 @@
-# learning-ai
+# AI Atlas
 
 An **agent-driven knowledge base** built from research on AI / agentic **YouTube
 channels**. For each video, an agent fetches the transcript and writes a **summary**, a
@@ -47,4 +47,4 @@ py -3.12 -m venv .venv
 The build emits GitHub-Pages-compatible output into `docs/` (includes `.nojekyll`). Enable
 Pages via **Settings → Pages → Deploy from branch → `main` / `/docs`**. Internal links are
 **relative**, so the site works unchanged on local preview, user-pages, and project-pages
-(`<user>.github.io/learning-ai/`) with no base-URL configuration.
+(`<user>.github.io/ai-atlas/`) with no base-URL configuration.

@@ -32,7 +32,7 @@ MARKDOWN_EXTENSIONS = ["extra", "fenced_code", "tables", "toc", "sane_lists"]
 # Match on this prefix (dash style after it may vary).
 GENERATED_MARKER_PREFIX = "<!-- GENERATED"
 
-SITE_TITLE = "learning-ai"
+SITE_TITLE = "AI Atlas"
 SITE_TAGLINE = "A knowledge base built from AI/agentic YouTube research"
 
 # The three analysis artifacts, in display order: (key, filename, label).

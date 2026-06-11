@@ -1,4 +1,4 @@
-# learning-ai knowledge-base pipeline dependencies
+# AI Atlas knowledge-base pipeline dependencies
 # Transcript acquisition
 yt-dlp
 youtube-transcript-api

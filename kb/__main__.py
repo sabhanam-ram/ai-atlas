@@ -6,7 +6,7 @@ import sys
 
 
 def main(argv=None) -> int:
-    parser = argparse.ArgumentParser(prog="kb", description="learning-ai knowledge-base pipeline")
+    parser = argparse.ArgumentParser(prog="kb", description="AI Atlas knowledge-base pipeline")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     p_new = sub.add_parser("new", help="scaffold a video folder + meta.json (and fetch transcript)")

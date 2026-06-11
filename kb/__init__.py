@@ -1,4 +1,4 @@
-"""learning-ai knowledge-base pipeline.
+"""AI Atlas knowledge-base pipeline.
 
 A small Python package that fetches YouTube transcripts and renders a static,
 AI-navigable knowledge site from Markdown + a JSON correlation layer.

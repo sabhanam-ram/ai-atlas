@@ -8,7 +8,7 @@ router; it intentionally does **not** duplicate the contract.
 
 ## What this repo is (one line)
 
-`learning-ai` — an agent-driven knowledge base built from AI/agentic YouTube videos: fetch a
+**AI Atlas** — an agent-driven knowledge base built from AI/agentic YouTube videos: fetch a
 transcript, write three analyses, correlate recurring topics, and render a static site into
 `docs/`.
 

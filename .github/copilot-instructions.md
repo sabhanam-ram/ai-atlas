@@ -6,7 +6,7 @@ pointer and deliberately does not restate the contract.
 
 ## Context
 
-`learning-ai` is an agent-driven knowledge base built from AI/agentic YouTube videos. The
+**AI Atlas** is an agent-driven knowledge base built from AI/agentic YouTube videos. The
 pipeline fetches a transcript; an agent then writes three analyses (summary / detailed /
 deep-dive), correlates recurring topics in `content/topics/_registry.json`, and a Python
 build (`python -m kb build`) renders a static site into `docs/`.
