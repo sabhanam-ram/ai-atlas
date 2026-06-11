@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "generated_note": "FOR AI AGENTS: This file is the SOURCE OF TRUTH for cross-video topic correlation. Before ingesting a new video, read this file fully. Normalize each detected phrase (lowercase, trim, collapse internal whitespace/hyphens to single spaces) and look it up in alias_index. If found -> REUSE that slug. If a confident token-overlap match against an existing display_name/alias exists -> REUSE and add the new alias. Otherwise CREATE a new topic. Append a mention (dedupe on video_id+analysis); never rewrite another video's mention. Then bump last_run/last_updated and append one dated line to _agent_log.md. See AGENTS.md for the full protocol.",
+  "last_updated": "2026-06-11",
+  "last_run": 1,
+  "alias_index": {
+    "multi agent systems": "multi-agent-systems",
+    "multi agent": "multi-agent-systems",
+    "multi agents": "multi-agent-systems",
+    "multiagent": "multi-agent-systems",
+    "sub agents": "multi-agent-systems",
+    "subagent": "multi-agent-systems",
+    "subagents": "multi-agent-systems",
+    "orchestrator worker": "multi-agent-systems",
+    "tool use": "tool-use",
+    "tool calling": "tool-use",
+    "function calling": "tool-use",
+    "tools": "tool-use",
+    "mcp": "mcp",
+    "model context protocol": "mcp",
+    "agents vs workflows": "agents-vs-workflows",
+    "agents versus workflows": "agents-vs-workflows",
+    "workflows of agents": "agents-vs-workflows",
+    "workflows": "agents-vs-workflows",
+    "agent loop": "agents-vs-workflows",
+    "context engineering": "context-engineering",
+    "context management": "context-engineering",
+    "context preservation": "context-engineering",
+    "context window": "context-engineering"
+  },
+  "topics": [
+    {
+      "slug": "multi-agent-systems",
+      "display_name": "Multi-Agent Systems",
+      "aliases": ["multi agent", "multi agents", "multiagent", "sub agents", "subagent", "subagents", "orchestrator worker"],
+      "short_definition": "Architectures in which multiple model instances work concurrently — typically an orchestrator/parent agent delegating subtasks to parallel sub-agents — for parallelism, context isolation, and as a form of test-time compute.",
+      "concept_ref": null,
+      "status": "active",
+      "created_run": 1,
+      "updated_run": 1,
+      "video_ids": ["uhJJgc-0iTQ"],
+      "mentions": [
+        {
+          "video_id": "uhJJgc-0iTQ",
+          "channel": "anthropic",
+          "published": "2025-10-17",
+          "analysis": "deep-dive",
+          "section": "09:44",
+          "anchor": "deepdive",
+          "claim": "Multi-agent means multiple Claudes working in parallel — a parent/orchestrator delegating to sub-agents (as in Deep Research and Claude Code); it is implemented on top of tool calling and framed as a form of test-time compute, with overbuilt systems failing via communication overhead.",
+          "products": ["Claude Deep Research", "Claude Code"],
+          "added_run": 1
+        }
+      ]
+    },
+    {
+      "slug": "tool-use",
+      "display_name": "Tool Use",
+      "aliases": ["tool calling", "function calling", "tools"],
+      "short_definition": "The mechanism by which a model takes actions: it emits a structured call against a declared tool, the application executes it, and the result re-enters the context. The substrate beneath agents, sub-agents, retrieval, and MCP.",
+      "concept_ref": "tool-use",
+      "status": "active",
+      "created_run": 1,
+      "updated_run": 1,
+      "video_ids": ["uhJJgc-0iTQ"],
+      "mentions": [
+        {
+          "video_id": "uhJJgc-0iTQ",
+          "channel": "anthropic",
+          "published": "2025-10-17",
+          "analysis": "detailed",
+          "section": "10:56",
+          "anchor": "detailed",
+          "claim": "Sub-agents are exposed to Claude through the tool-calling framework — a sub-agent 'looks like a tool' that accepts a prompt; tool calling is the communication protocol, with the handler simply backed by another Claude.",
+          "products": [],
+          "added_run": 1
+        }
+      ]
+    },
+    {
+      "slug": "mcp",
+      "display_name": "Model Context Protocol (MCP)",
+      "aliases": ["model context protocol"],
+      "short_definition": "An open standard for connecting AI applications to external tools, data, and prompts through a uniform interface; the standard way to add custom tools to an agent loop.",
+      "concept_ref": "mcp",
+      "status": "active",
+      "created_run": 1,
+      "updated_run": 1,
+      "video_ids": ["uhJJgc-0iTQ"],
+      "mentions": [
+        {
+          "video_id": "uhJJgc-0iTQ",
+          "channel": "anthropic",
+          "published": "2025-10-17",
+          "analysis": "detailed",
+          "section": "15:57",
+          "anchor": "detailed",
+          "claim": "Tools/MCP servers should be designed 1:1 with your UI, not your API — because the model is a user, a tool should return everything at once and minimize round-trips (the Slack three-endpoints example).",
+          "products": ["MCP", "Claude Code SDK"],
+          "added_run": 1
+        }
+      ]
+    },
+    {
+      "slug": "agents-vs-workflows",
+      "display_name": "Agents vs. Workflows",
+      "aliases": ["workflows of agents", "workflows", "agent loop", "agents versus workflows"],
+      "short_definition": "The architectural spectrum from predefined prompt chains (workflows) to a model run in a self-correcting loop (agents), and the hybrid 'workflows of agents' where each workflow step is itself a closed agent loop.",
+      "concept_ref": null,
+      "status": "active",
+      "created_run": 1,
+      "updated_run": 1,
+      "video_ids": ["uhJJgc-0iTQ"],
+      "mentions": [
+        {
+          "video_id": "uhJJgc-0iTQ",
+          "channel": "anthropic",
+          "published": "2025-10-17",
+          "analysis": "detailed",
+          "section": "06:42",
+          "anchor": "detailed",
+          "claim": "Agents (a model in a loop) have largely overtaken workflows for quality-critical tasks because Claude self-corrects; workflows remain best for low-latency single-shot; the emerging pattern is 'workflows of agents' where each step is a closed agent loop that iterates until correct.",
+          "products": [],
+          "added_run": 1
+        }
+      ]
+    },
+    {
+      "slug": "context-engineering",
+      "display_name": "Context Engineering",
+      "aliases": ["context management", "context preservation", "context window"],
+      "short_definition": "Deliberately managing what occupies a model's finite context window — including offloading token-heavy subtasks to sub-agents that return only small results — to keep the working (short-term) memory focused. The working-memory layer of agent memory.",
+      "concept_ref": "agent-memory",
+      "status": "active",
+      "created_run": 1,
+      "updated_run": 1,
+      "video_ids": ["uhJJgc-0iTQ"],
+      "mentions": [
+        {
+          "video_id": "uhJJgc-0iTQ",
+          "channel": "anthropic",
+          "published": "2025-10-17",
+          "analysis": "deep-dive",
+          "section": "10:31",
+          "anchor": "deepdive",
+          "claim": "Sub-agents protect the main context: a token-heavy subtask (e.g. locating a class implementation) is offloaded to a sub-agent that returns only the small final answer, preserving the orchestrator's context window; splitting 100–200 tools into ~20-tool buckets applies the same logic to the tool namespace.",
+          "products": ["Claude Code"],
+          "added_run": 1
+        }
+      ]
+    }
+  ]
+}

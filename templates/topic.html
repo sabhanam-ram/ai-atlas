@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>{{ topic.display_name }}</h1>
+  {% if topic.short_definition %}<p class="lead">{{ topic.short_definition }}</p>{% endif %}
+
+  {{ body_html }}
+
+  <div class="generated">
+    {% if concept_ref %}
+    <div class="refbox">📖 Canonical reference: <a href="{{ rel(concept_ref.page) }}">{{ concept_ref.display }}</a></div>
+    {% else %}
+    <div class="refbox empty">No canonical concept reference yet for this topic.</div>
+    {% endif %}
+
+    <h2>Mentioned in {{ video_count }} video(s)</h2>
+    {% if mentions %}
+    <ul class="mention-list">
+      {% for m in mentions %}
+      <li>
+        <a href="{{ rel(m.video_page) }}{% if m.anchor %}#{{ m.anchor }}{% endif %}">{{ m.video_title }}</a>
+        <span class="note-muted">— {{ m.channel }}{% if m.published %}, {{ m.published }}{% endif %}{% if m.analysis %} · {{ m.analysis }}{% endif %}{% if m.section %} @ {{ m.section }}{% endif %}</span>
+        {% if m.claim %}<br>{{ m.claim }}{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="note-muted">No recorded mentions yet.</p>
+    {% endif %}
+
+    {% if timeline %}
+    <h2>Evolution timeline</h2>
+    <ul class="timeline">
+      {% for t in timeline %}
+      <li>
+        <span class="tl-date">{{ t.date or 'undated' }}</span>
+        {% for p in t.products %}<span class="tl-product">{{ p }}</span>{% endfor %}
+        <div>
+          {{ t.claim }}
+          {% if t.video_page %}<a class="note-muted" href="{{ rel(t.video_page) }}{% if t.anchor %}#{{ t.anchor }}{% endif %}" title="source">↗</a>{% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if related %}
+    <h2>Related topics</h2>
+    <ul class="chips">
+      {% for r in related %}<li><a class="chip chip-topic" href="{{ rel(r.page) }}">{{ r.display }}</a></li>{% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+{% endblock %}

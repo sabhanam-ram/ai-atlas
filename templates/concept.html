@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>{{ concept.display_name }}</h1>
+  <p class="lead note-muted">Canonical reference · part of the AI-readiness concept library</p>
+
+  {{ body_html }}
+
+  <div class="generated">
+    {% if topics %}
+    <h2>Topics that aggregate this concept</h2>
+    <ul class="chips">
+      {% for t in topics %}<li><a class="chip chip-topic" href="{{ rel(t.page) }}">{{ t.display }}</a></li>{% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if videos %}
+    <h2>Videos that touch this concept</h2>
+    <ul class="mention-list">
+      {% for v in videos %}<li><a href="{{ rel(v.page) }}">{{ v.display }}</a></li>{% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if not topics and not videos %}
+    <p class="note-muted">Not yet referenced by any topic or video.</p>
+    {% endif %}
+  </div>
+{% endblock %}

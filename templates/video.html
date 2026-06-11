@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>{{ video.title or video.video_id }}</h1>
+  <p class="meta-line">
+    {{ video.channel_name or video.channel }}{% if video.publish_date %} · {{ video.publish_date }}{% endif %}{% if video.duration_display %} · {{ video.duration_display }}{% endif %}
+  </p>
+  <p class="source-link"><a href="{{ video.url }}" target="_blank" rel="noopener">▶ Watch on YouTube</a></p>
+
+  {% if topic_chips or concept_chips %}
+  <ul class="chips">
+    {% for chip in topic_chips %}<li><a class="chip chip-topic" href="{{ rel(chip.page) }}">{{ chip.display }}</a></li>{% endfor %}
+    {% for chip in concept_chips %}<li><a class="chip chip-concept" href="{{ rel(chip.page) }}">{{ chip.display }}</a></li>{% endfor %}
+  </ul>
+  {% endif %}
+
+  {% for a in analyses %}
+    {% if a.key == 'summary' %}
+    <section class="analysis" id="summary">
+      <h2>{{ a.label }}</h2>
+      {{ a.html }}
+    </section>
+    {% else %}
+    <details class="analysis" id="{{ a.key }}"{% if loop.first %} open{% endif %}>
+      <summary>{{ a.label }}</summary>
+      {{ a.html }}
+    </details>
+    {% endif %}
+  {% endfor %}
+  {% if not analyses %}<p class="note-muted">Analyses not written yet (status: {{ video.status }}).</p>{% endif %}
+
+  <hr>
+  <p class="note-muted">
+    Transcript: <code>{{ transcript_path }}</code>{% if transcript_method %} (via {{ transcript_method }}){% endif %}.
+  </p>
+{% endblock %}

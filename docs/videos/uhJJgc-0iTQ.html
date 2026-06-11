@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Building more effective AI agents · learning-ai</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html">learning<span class="dot">·</span>ai</a>
+      <nav>
+<a href="../index.html">Home</a><a href="../topics/index.html">Topics</a><a href="../concepts/index.html">Concepts</a>      </nav>
+    </div>
+  </header>
+  <main>
+  <h1>Building more effective AI agents</h1>
+  <p class="meta-line">
+    Anthropic · 2025-10-17 · 18:58  </p>
+  <p class="source-link"><a href="https://www.youtube.com/watch?v=uhJJgc-0iTQ" target="_blank" rel="noopener">▶ Watch on YouTube</a></p>
+
+  <ul class="chips">
+<li><a class="chip chip-topic" href="../topics/multi-agent-systems.html">Multi-Agent Systems</a></li><li><a class="chip chip-topic" href="../topics/tool-use.html">Tool Use</a></li><li><a class="chip chip-topic" href="../topics/mcp.html">Model Context Protocol (MCP)</a></li><li><a class="chip chip-topic" href="../topics/agents-vs-workflows.html">Agents vs. Workflows</a></li><li><a class="chip chip-topic" href="../topics/context-engineering.html">Context Engineering</a></li><li><a class="chip chip-concept" href="../concepts/tool-use.html">Tool Use (Function Calling)</a></li><li><a class="chip chip-concept" href="../concepts/mcp.html">Model Context Protocol (MCP)</a></li><li><a class="chip chip-concept" href="../concepts/agent-memory.html">Agent Memory</a></li>  </ul>
+
+    <section class="analysis" id="summary">
+      <h2>Summary</h2>
+      <p>A conversation between <strong>Alex</strong> (who leads Claude Relations at Anthropic) and <strong>Erik</strong>
+(multi-agent research at Anthropic) on how to build more effective AI agents.</p>
+<ul>
+<li><strong>Why Claude is good at agent tasks:</strong> during training it is given open-ended, multi-step
+  problems and practices "being an agent" — taking many steps and using tools before giving
+  a final answer — reinforced heavily on coding and search. (00:33)</li>
+<li><strong>Coding is the foundational skill:</strong> "train on the hardest thing first." A strong coding
+  agent generalizes to non-coding work — web search, planning, and producing artifacts by
+  <em>writing code</em> (e.g. a script that emits an Excel file or repetitive SVG). (01:26)</li>
+<li><strong>Claude Code SDK:</strong> a ready-made, polished agent loop so developers don't rebuild the
+  loop, tool execution, file handling, and MCP wiring themselves; it's a general-purpose
+  agent that you customize by swapping in your own tools via MCP. (03:23)</li>
+<li><strong>Skills:</strong> an extension of <code>CLAUDE.md</code> from instructions-only to bundling reusable
+  <em>resources</em> (templates, scripts, assets) — the "Matrix kung-fu download" analogy. (05:29)</li>
+<li><strong>Workflows → agents → "workflows of agents":</strong> agent loops now beat rigid workflows on
+  quality because Claude self-corrects; workflows still win for low-latency single-shot; the
+  emerging pattern wraps each workflow step in its own closed agent loop. (06:42)</li>
+<li><strong>Multi-agent:</strong> an orchestrator delegates to sub-agents running in parallel (as in Deep
+  Research and Claude Code). Sub-agents are invoked through the tool-calling framework and
+  are used to parallelize work and to <strong>protect the main context</strong>. (09:44)</li>
+<li><strong>Best practices:</strong> start simple and add complexity only as needed; "think from the
+  agent's point of view" — read exactly what the model sees; design tools/MCPs <strong>1:1 with
+  your UI, not your API</strong>. (15:12)</li>
+<li><strong>The future:</strong> agents spreading outward from verifiable domains (software engineering),
+  self-verifying via computer use, and acting directly inside apps. (16:59)</li>
+</ul>
+    </section>
+    <details class="analysis" id="detailed">
+      <summary>Detailed analysis</summary>
+      <p>The discussion moves from <em>why</em> Claude is capable as an agent, through the concrete
+building blocks Anthropic ships, to the architectural shift from workflows to agents and
+multi-agent systems, and closes with practical design guidance.</p>
+<h2 id="why-claude-is-effective-at-agentic-tasks">Why Claude is effective at agentic tasks</h2>
+<p>Erik attributes Claude's agentic ability to training rather than prompting: Claude is given
+open-ended problems where it "can take many steps and use tools, explore where it is and
+what it's working on before giving a final answer," and gets "lots of practice at being an
+agent" (00:34). This is done with reinforcement learning across many environments —
+"lots of RL on coding tasks, on search tasks" (01:07) — so Claude learns to pursue an
+objective with limited guidance or feedback.</p>
+<h2 id="coding-as-the-foundational-skill">Coding as the foundational skill</h2>
+<p>Coding was the first focus, deliberately: "once you have an amazing coding agent, a coding
+agent can do any other kind of work" (01:47). Search, planning, and file creation all fall
+out of code ability. A recurring idea is that <strong>producing an artifact by writing code often
+beats producing it directly</strong> — Claude wrote SVG-generating code for a repetitive diagram
+because the script "ran much, much faster than Claude itself needing to write" each element
+(02:48). "Claude gets a for loop" (03:17) captures the leverage: code enables repeated
+actions a human couldn't do by hand.</p>
+<h2 id="the-developer-building-blocks-claude-code-sdk-and-skills">The developer building blocks: Claude Code SDK and Skills</h2>
+<ul>
+<li><strong>Claude Code SDK</strong> (03:23): previously, building an agent meant going "from nothing but
+  hitting an API endpoint, build the loops yourself, build all the tools, build executing
+  these tools, interacting with files, interacting with MCP." The SDK packages that core
+  loop. Despite the name, "Claude Code is just a general-purpose agent that is most often
+  used for code"; developers strip the coding-specific parts and "just add their tools for
+  their own custom business logic … via MCP" (04:19).</li>
+<li><strong>Skills</strong> (05:29): an extension of <code>CLAUDE.md</code>. Where <code>CLAUDE.md</code> supplies instructions
+  (style, directory layout), Skills bundle <em>any</em> resource — "PowerPoint template files …
+  code and helper scripts … images or assets." Giving the agent "not just instructions but
+  resources" is the leap; the "Matrix kung-fu" analogy describes loading a Skill and having
+  Claude immediately operate like a domain expert.</li>
+</ul>
+<h2 id="from-workflows-to-agents-to-workflows-of-agents">From workflows to agents to "workflows of agents"</h2>
+<p>Erik frames a clear evolution (06:42):</p>
+<ul>
+<li><strong>Workflows</strong> — predefined chains of prompts; still best when "you need very low latency
+  and you want Claude to just give a best answer, single shot."</li>
+<li><strong>Agents</strong> — a model run in a loop; now "dramatically outperform workflows for most
+  things where you care most about absolute quality," because Claude responds to feedback
+  and corrects its own work.</li>
+<li><strong>Workflows of agents</strong> — each step of a workflow becomes its own closed agent loop. The
+  SQL→chart example (07:38): in a plain workflow, a failed SQL step silently breaks the
+  downstream chart step; when each step is an agent loop, Claude "sees the output and then
+  it can keep iterating … until it knows that it got the right value" before advancing.</li>
+</ul>
+<h2 id="multi-agent-systems">Multi-agent systems</h2>
+<p>Multi-agent (Erik's main research area) is distinct from workflows of agents: "fundamentally
+you have multiple agents … working at the same time," e.g. "one parent agent delegates
+tasks to five sub-agents that can each then work in parallel" (09:56). Two production
+examples: <strong>Deep Research</strong>, where an orchestrator spawns parallel search sub-agents so the
+user gets an answer sooner (10:10), and <strong>Claude Code</strong>, where a sub-agent absorbs a
+token-heavy subtask and returns only the small needed result (10:27).</p>
+<p>Crucially, <strong>sub-agents are exposed through the tool-calling framework</strong>: "to Claude
+sub-agents look like a tool" that accepts a prompt (10:56); it "uses the framework of tool
+calling for that communication protocol … it just happens to be a tool that itself is
+backed by … another Claude" (11:28). Part of Erik's research is training Claude to be a
+better "manager" — early on it "makes a lot of the same mistakes that first-time managers
+make," giving incomplete or unclear instructions and assuming the sub-agent has context it
+doesn't (11:49).</p>
+<p>Use cases beyond search: anything parallelizable or "MapReduced," and <strong>splitting large tool
+sets</strong> — customers with 100–200 tools give each sub-agent a bucket of ~20 so the main agent
+only chooses a bucket (13:39). Multi-agent is also floated as a <strong>form of test-time
+compute</strong>: "many Claudes work on a problem can … get you a better final answer than just
+one" (13:00).</p>
+<h2 id="observability-failure-modes-and-best-practices">Observability, failure modes, and best practices</h2>
+<ul>
+<li><strong>Observability is hard</strong> and gets harder as systems grow, which is why "simplicity is
+  still a really important thing" — start from "the simplest possible thing" and add layers
+  only as needed (08:46).</li>
+<li><strong>Failure mode:</strong> overbuilt multi-agent systems "spend too much time just talking back and
+  forth … and not actually making progress," analogous to communication overhead in large
+  human organizations (14:22).</li>
+<li><strong>Think from the agent's point of view</strong> (15:12): "put yourself in Claude's shoes and read
+  what it actually gets … the model only sees what we showed." Reviewing the raw transcript
+  of tool calls and logs is recommended.</li>
+<li><strong>Tool/MCP design — 1:1 with your UI, not your API</strong> (15:57): because "the model is a user
+  of these things," a tool should present everything at once with minimal interaction. The
+  Slack example: don't expose three endpoints (load conversation, user-ID→name,
+  channel-ID→name) that force three tool calls; expose one tool that returns the rendered
+  result, just as a human sees it.</li>
+</ul>
+<h2 id="the-future-of-agents">The future of agents</h2>
+<p>Agents will become pervasive "starting in areas that are verifiable like software
+engineering" (16:59). The most exciting near-term step is <strong>self-verification via computer
+use</strong> — an agent that writes a web app, opens it, tests it, and finds its own bug, so the
+human isn't "Claude's QA engineer." Computer use also unlocks domains agents were locked out
+of, e.g. editing a Google Doc in place rather than copy-pasting back and forth (18:06).</p>
+    </details>
+    <details class="analysis" id="deepdive">
+      <summary>Deep-dive analysis</summary>
+      <p>Beneath the practical advice, the conversation advances a coherent thesis about where
+agent engineering is heading. Four ideas are worth drawing out, because each recurs across
+the broader AI-agents discourse and connects to the concept library.</p>
+<h2 id="1-capability-comes-from-training-the-loop-not-engineering-the-prompt">1. Capability comes from training the loop, not engineering the prompt</h2>
+<p>The opening claim reframes "agent quality." Rather than locating agentic skill in clever
+orchestration, Erik locates it in <em>practice</em>: Claude is trained on open-ended tasks where it
+must take many steps, use tools, and only then answer (00:34), with RL across coding and
+search environments (01:07). The implication for builders is deflationary in a useful way —
+if the base model has already learned to drive a tool-use loop and self-correct, then the
+job of the application is mostly to <strong>expose good tools and get out of the way</strong>, not to
+hand-script the reasoning. This is the through-line that makes "start simple" (08:46) more
+than a platitude: complexity you add is complexity competing with a loop the model already
+runs well.</p>
+<h2 id="2-coding-is-a-generality-lever-and-code-is-an-action">2. Coding is a generality lever, and code is an action</h2>
+<p>Two related moves: "train on the hardest thing first and then everything else will become
+easy" (01:56), and the observation that <strong>writing code to produce an artifact often beats
+producing the artifact directly</strong> (03:00). The SVG-generation anecdote (02:43) is the tell —
+the agent reaches for a <em>for loop</em> because deterministic, repeatable computation is cheaper
+and more reliable than token-by-token generation for repetitive structure. Code is treated
+not as an end product but as a general-purpose action surface: the same capability that
+fixes a bug also plans a date via web searches (04:42). This is why Claude Code is described
+as "a general-purpose agent that is most often used for code" (03:58) rather than a coding
+tool per se.</p>
+<h2 id="3-sub-agents-are-a-tool-and-a-context-economics-decision">3. Sub-agents are a tool, and a context-economics decision</h2>
+<p>The most architecturally load-bearing point is that <strong>multi-agent is implemented on top of
+tool calling</strong>: "to Claude sub-agents look like a tool" (10:56), "it just happens to be a
+tool that itself is backed by … another Claude" (11:36). This collapses a seemingly new
+paradigm into the existing primitive — there is no separate "multi-agent protocol," just
+tool calls whose handlers spawn more model loops.</p>
+<p>The <em>motivation</em> is just as important: sub-agents are frequently a <strong>context-management</strong>
+move, not only a parallelism move. In Claude Code, a subtask that "is gonna take tens of
+thousands of tokens" — like locating a class implementation whose answer "really boils down
+to something very small" — is offloaded so it can "protect the main context from all of
+that" (10:31). The orchestrator pays a small, summarized result instead of polluting its own
+window with the full search. Splitting 100–200 tools into ~20-tool buckets per sub-agent
+(13:39) is the same logic applied to the tool namespace: keep each agent's decision space
+small.</p>
+<p>The honest counterweight is the failure mode: overbuilt systems "spend too much time just
+talking back and forth … and not actually making progress" (14:35), explicitly analogized
+to communication overhead in large human orgs. And the "first-time manager" framing (11:49)
+— Claude under-specifies instructions to sub-agents and assumes context they lack — names a
+real, persistent difficulty that Anthropic is training against. Multi-agent as a "form of
+test time compute" (13:00) is offered as the upside thesis: parallel diverse attempts can
+beat a single attempt, the same way a group of people can outperform an individual.</p>
+<h2 id="4-the-model-is-a-user-design-for-the-ui-not-the-api">4. The model is a user — design for the UI, not the API</h2>
+<p>The single most reusable design principle here is "tools for the model or MCPs should be
+one-to-one with your UI, not your API" (16:13), justified by "ultimately the model is a user
+of these things" (16:21). The Slack example (16:27) is concrete: three API endpoints
+(load conversation, resolve user ID, resolve channel ID) force three tool calls and three
+round-trips; a human just sees everything rendered at once, so the <em>tool</em> should too. This
+generalizes the "think from the agent's point of view" advice (15:12) into an interface
+contract: minimize round-trips, return rendered/complete results, surround a result with the
+context needed to act on it.</p>
+<h2 id="notable-verbatim">Notable verbatim</h2>
+<blockquote>
+<p>"Once you have an amazing coding agent, a coding agent can do any other kind of work." (01:47)</p>
+<p>"To Claude sub-agents look like a tool where it can pass prompts to the sub-agents that
+will then go and do work." (11:06)</p>
+<p>"Tools for the model or MCPs should be one-to-one with your UI, not your API … the model
+is a user of these things." (16:13)</p>
+</blockquote>
+<h2 id="connections-to-the-concept-library">Connections to the concept library</h2>
+<ul>
+<li><strong>Tool use</strong> is the substrate for everything here — sub-agents, MCP, and search are all
+  tool calls; the "design for the UI" principle is fundamentally a tool-description quality
+  argument.</li>
+<li><strong>MCP</strong> is the standard surface for "add your own tools" to the Claude Code SDK loop, and
+  the 1:1-with-UI rule is concrete MCP design guidance.</li>
+<li><strong>Context engineering / agent memory:</strong> sub-agent offloading is working-memory management —
+  protecting the orchestrator's finite context window, the short-term layer of agent memory.</li>
+<li><strong>Agents vs. workflows</strong> and <strong>multi-agent systems</strong> are the architectural patterns this
+  video adds to the corpus; future videos that revisit them should extend their topic
+  timelines rather than restating the basics.</li>
+</ul>
+    </details>
+
+  <hr>
+  <p class="note-muted">
+    Transcript: <code>references/youtube/anthropic/uhJJgc-0iTQ.md</code> (via youtube-transcript-api).
+  </p>
+  </main>
+  <footer class="site-footer">
+    Generated by the learning-ai pipeline · knowledge in <code>content/</code>, raw transcripts in <code>references/</code>.
+  </footer>
+</body>
+</html>

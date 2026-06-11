@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>{{ intro if intro else site_title }}</h1>
+  {% if intro_sub %}<p class="lead">{{ intro_sub }}</p>{% endif %}
+
+  {% if cards %}
+  <ul class="cards">
+    {% for card in cards %}
+    <li class="card">
+      <a class="card-title" href="{{ rel(card.page) }}">{{ card.title }}</a>
+      {% if card.meta %}<p class="card-meta">{{ card.meta }}</p>{% endif %}
+      {% if card.desc %}<p>{{ card.desc }}</p>{% endif %}
+      {% if card.chips %}
+      <ul class="chips">
+        {% for chip in card.chips %}
+        <li><a class="chip chip-{{ chip.kind }}" href="{{ rel(chip.page) }}">{{ chip.display }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="note-muted">{{ empty_msg }}</p>
+  {% endif %}
+{% endblock %}

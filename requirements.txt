@@ -1,0 +1,8 @@
+# learning-ai knowledge-base pipeline dependencies
+# Transcript acquisition
+yt-dlp
+youtube-transcript-api
+playwright            # last-resort fallback (scrapes the transcript panel)
+# Static-site build
+markdown
+jinja2

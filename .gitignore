@@ -1,0 +1,16 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Playwright browser cache (installed into the venv / user cache)
+ms-playwright/
+.playwright/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+
+# NOTE: docs/ is the generated static site served by GitHub Pages.
+#       It is intentionally NOT ignored — commit it.

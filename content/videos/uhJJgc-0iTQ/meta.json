@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "video_id": "uhJJgc-0iTQ",
+  "url": "https://www.youtube.com/watch?v=uhJJgc-0iTQ",
+  "title": "Building more effective AI agents",
+  "channel": "anthropic",
+  "channel_name": "Anthropic",
+  "publish_date": "2025-10-17",
+  "duration_seconds": 1138,
+  "fetch_date": "2026-06-11",
+  "topics": ["multi-agent-systems", "tool-use", "mcp", "agents-vs-workflows", "context-engineering"],
+  "concepts": ["tool-use", "mcp", "agent-memory"],
+  "products": ["Claude Code", "Claude Code SDK", "Agent Skills", "Claude Deep Research", "MCP"],
+  "people": ["Alex", "Erik"],
+  "status": "rendered",
+  "analyses": {
+    "summary": "summary.md",
+    "detailed": "detailed.md",
+    "deepdive": "deepdive.md"
+  },
+  "source": {
+    "transcript_path": "references/youtube/anthropic/uhJJgc-0iTQ.md",
+    "transcript_method": "youtube-transcript-api",
+    "has_timestamps": true,
+    "language": "en"
+  },
+  "created_at": "2026-06-11T14:06:49Z",
+  "updated_at": "2026-06-11T14:06:53Z"
+}
